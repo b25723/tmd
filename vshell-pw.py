@@ -34,10 +34,10 @@ def gen(inp=0):
         print out
         return out
     elif inp==2:
-        comb=random.choice([digits+symbols+upletters,digits+symbols+upletters+lowletters+ctrlchars+extendchars])
-        neg_padding=''.join([random.choice(comb) for x in range(random.randint(0,36))])
+        comb=random.choice([digits+symbols+upletters,digits+symbols+upletters+lowletters,digits+symbols+upletters+lowletters+ctrlchars+extendchars])
+        neg_padding=''.join([random.choice(comb) for x in range(random.randint(4,28))])
         out=random.choice(digits)+random.choice(symbols)+random.choice(upletters)+neg_padding
-        #print len(out)
+        print len(out)
         print out
         return out
 
