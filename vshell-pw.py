@@ -1,17 +1,18 @@
 import paramiko
+import socket
 import time
 import logging
 import string
 import random
 
-host='10.24.254.50'
+#host='10.24.253.248'
+host='10.24.254.181'
 user='root'
-#initpw="4!DvbMDzf3XWx=qu3M]#s-'5H"
-psw="""9&YsA[@Ac2Nb8QwA7q?"""
+initpw="aA@1234567"
+psw="""aA@1234567"""
 
 #0=match and min/max,1=unmatch
 def gen(inp=0):
-
     #chs=map(chr,range(32,127))
     digits=map(chr,range(48,58))
     symbols=map(chr,range(32,48)+range(58,65)+range(91,97)+range(123,127))
@@ -49,14 +50,22 @@ def login(password=psw):
     channel = ssh.invoke_shell()
     channel.send('passwd\n')
     #time.sleep(1)
-    psw=gen(0)
+    psw=gen(1)
     channel.send(psw+'\n')
     time.sleep(1)
     channel.send(psw+'\n')
     ssh.close()
 
-for i in range(10):gen(2)
-#for i in range(20000):
-#    #print psw
-#    login(password=psw)
-#    #print psw
+#for i in range(10):gen(2)
+for i in range(10000):
+    try:
+        #print psw
+        login(password=initpw)
+        #print psw
+    except (socket.error, NameError) as e:
+        print e
+        pass
+
+
+
+
