@@ -1,0 +1,26 @@
+cloudmse:
+  restful_server: http://restfulsrv-sbi.common.vmse:5558
+  userinfo_server: http://userinfo.common.vmse:8080
+logprocessor_endpts:
+  - logprocessor1.vnfs.trend.app.vmse
+director_ip: director.vnfs.trend.app.vmse
+port_cfgs:
+  ip:
+    - 0: dhcp
+    - 1: dhcp
+  nexthop:
+    - 0: 192.168.8.1
+    - 1: 192.168.8.1
+  role:
+    - 0: l2gw
+    - 1: l2gw
+snmp:
+  enabled: true #true | false
+  version: v1   #v1 | v2c | v3
+  community: public
+  security_name: snmpuser
+  security_level: authNoPriv #authNoPriv | authPriv | noAuthNoPriv
+  auth_protocol: SHA #MD5 | SHA
+  auth_key: 1234567a
+  priv_protocol: AES #DES | AES
+  priv_key: 1234567a

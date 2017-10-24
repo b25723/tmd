@@ -326,7 +326,7 @@ def add_schds(counter=1):
 
 #add_account(1)
 #add_ips(1)
-copy_ips(1)
+#copy_ips(1)
 #del_ips()
 #add_pol(1020)
 #update_pol()

@@ -9,10 +9,10 @@ import sys
 host=sys.argv[1]
 #host='10.24.254.181'
 user='root'
-initpw="aA@1234567"
-psw="""aA@1234567"""
+initpw="ntdtg@trendmicro"
+psw="""ntdtg@trendmicro"""
 
-#0=match and min/max,1=unmatch
+#0=match and min/max,1=unmatch,2=perhaps match
 def gen(inp=0):
     #chs=map(chr,range(32,127))
     digits=map(chr,range(48,58))
@@ -52,19 +52,20 @@ def login(password=psw):
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(host,username=user,password=password,timeout=30)
     channel = ssh.invoke_shell()
+    psw=gen(0)
+    time.sleep(1)
     channel.send('passwd\n')
-    #time.sleep(1)
-    psw=gen(1)
     channel.send(psw+'\n')
     time.sleep(1)
     channel.send(psw+'\n')
+    time.sleep(1)
     ssh.close()
 
 #for i in range(10):gen(2)
 for i in range(10000):
     try:
         #print psw
-        login(password=initpw)
+        login(password=psw)
         #print psw
     except (socket.error, NameError) as e:
         print e
