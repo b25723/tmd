@@ -1,0 +1,139 @@
+
+
+#notice remembering turn on allowing action to make packet passing through detection path.
+#declaring ip subscription.
+#ipv4
+#ipv6
+#vlan
+
++ Land TCP
+= Land TCP with ...
+~ description .... local link and vlan id over-length cases
+
+sendp(Ether()/Dot1Q(vlan=0)/IP(src='192.168.111.17',dst='192.168.111.17')/TCP(sport=12,dport=12),iface='ens3')
+sendp(Ether()/IPv6(src='2001:192:168:111::17',dst='2001:192:168:111::17')/TCP(sport=12,dport=12),iface='ens3')
+sendp(Ether()/Dot1Q(vlan=4095)/IPv6(src='2001:192:168:111::17',dst='2001:192:168:111::17')/TCP(sport=12,dport=12),iface='ens3') 
+
++ Land UDP
+= Land UDP with ...
+~ description ....
+
+sendp(Ether()/Dot1Q(vlan=0)/IP(src='192.168.111.17',dst='192.168.111.17')/UDP(sport=11,dport=11),iface='ens3')
+sendp(Ether()/IPv6(src='2001:192:168:111::17',dst='2001:192:168:111::17')/UDP(sport=11,dport=11),iface='ens3')
+sendp(Ether()/Dot1Q(vlan=4095)/IPv6(src='2001:192:168:111::17',dst='2001:192:168:111::17')/UDP(sport=11,dport=11),iface='ens3')
+
++ IGMP Bad
+= IGMP Bad
+~ description ....
+
+load_contrib('igmp')
+sendp(Ether()/IP(src='192.168.111.17',dst='100.0.254.254',proto=2)/IGMP(type=0x17),iface='ens3')
+sendp(Ether()/Dot1Q(vlan=1)/IP(src='192.168.111.17',dst='100.0.254.254',proto=2)/IGMP(type=0x17),iface='ens3')
+
++ ICMP Error message
+= ICMP Error message
+~ description ....
+
+sendp(Ether()/IP(src='192.168.111.17',dst='100.0.254.254',proto=1)/ICMP(type=3,code=12)/IPerror(src='1.1.1.1',dst='2.2.2.2'),iface='ens3')
+
+
++ Bad TCP Flag
+= Bad TCP Flag
+~ description ....
+
+sendp(Ether()/IP(src='192.168.111.17',dst='192.168.111.5')/TCP(flags=''),iface='ens3')
+
+
++ TCP SYN Flood
+= TCP SYN Flood
+~ description ....
+
+#sendp(Ether()/IP(src='192.168.111.17',dst='10.24.9.140')/TCP(sport=(1024,1400),dport=80),iface='ens3')
+#sendp(Ether()/IP(src='192.168.0.0/20',dst='10.24.9.140')/TCP(sport=1024,dport=80),iface='ens3')
+
+a=[x for x in Ether()/IP(src='192.168.111.17',dst='100.0.254.254',proto=6)/TCP(flags='S',sport=1024,dport=80)]
+b=[x for x in Ether()/IP(dst='192.168.111.17',src='100.0.254.254',proto=6)/TCP(flags='RA',dport=1024,sport=80)]
+c=zip(a,b)
+d=list(itertools.chain.from_iterable(c))
+sendp(d*200,iface='ens3')
+
+
++ TCP Flood
+= TCP Flood
+~ description .... local link and vlan id over-length cases
+f.append(Ether()/IP(src='192.168.111.17',dst='100.0.254.254')/TCP(flags='UE',sport=1024,dport=80))
+f.append(Ether()/IP(dst='192.168.111.17',src='100.0.254.254')/TCP(flags='RA',dport=1024,sport=80))
+
+
++ IGMP Flood
+= IGMP Flood
+~ description .... local link and vlan id over-length cases
+sendp(Ether()/IP(src='192.168.111.17',dst='100.0.254.254',proto=2)/IGMP(type=0x17),iface='ens3',count=300)
+
+
++ UDP Flood
+= UDP Flood
+~ description .... local link and vlan id over-length cases
+sendp(Ether()/IP(src='100.0.0.1',dst='100.0.254.254',proto=17,len=27)/UDP(sport=1024,dport=80),iface='ens3',count=300)
+
+
+
+
++ ICMP Flood
+= ICMP Flood
+~ description .... local link and vlan id over-length cases
+sendp(Ether()/IP(dst='100.0.0.1',src='100.0.254.254',proto=1)/ICMP(type=3,code=3),iface='ens3',count=300)
+
+
+
+
++ IP Flood
+= IP Flood
+~ description .... local link and vlan id over-length cases
+
+sendp(Ether()/IP(src='100.0.0.1',dst='100.0.254.254',flags=0x4),iface='ens3',count=300)
+
+
+
+
+
++ TCP Port SYN Scan
+= TCP Port SYN Scan
+~ description ....
+
+sendp(Ether()/IP(src='192.168.111.17',dst='10.24.9.140',id=102)/TCP(flags='S',sport=100,dport=200)/('a'),iface='lo'); sendp(Ether()/IP(src='10.24.9.140',dst='192.168.111.17',id=1001)/TCP(flags='R',sport=200,dport=100),iface='ens3'); sendp(Ether()/IP(src='192.168.111.17',dst='10.24.9.140',id=102)/TCP(flags='S',sport=100,dport=(200,500))/('a'),iface='ens3')
+
+sendp(Ether()/IP(src='192.168.111.17',dst='100.0.254.254',id=102)/TCP(flags='S',sport=100,dport=200)/('a'),iface='ens3'); sendp(Ether()/IP(src='100.0.254.254',dst='192.168.111.17',id=1001)/TCP(flags='R',sport=200,dport=100),iface='ens3'); sendp(Ether()/IP(src='192.168.111.17',dst='100.0.254.254',id=102)/TCP(flags='S',sport=100,dport=(200,500))/('a'),iface='ens3')
+
+
++ TCP XMAS Port Scan
+= TCP XMAS Port Scan
+~ description ....
+
+sendp(Ether()/IP(id=120,src='192.168.111.17',dst='10.24.9.140')/TCP(flags='FPU',sport=100,dport=1),iface='ens3'); sendp(Ether()/IP(src='10.24.9.140',dst='192.168.111.17',id=1100)/TCP(flags='R',sport=1,dport=100),iface='ens3'); sendp(Ether()/IP(id=120,src='192.168.111.17',dst='10.24.9.140')/TCP(flags='FPU',sport=100,dport=(1,300)),iface='ens3')
+
+sendp(Ether()/IP(src='192.168.111.17',dst='100.0.254.254')/TCP(flags='FPU',sport=1024,dport=(80,400)))
+
+
+
+
++ TCP Null Scan
+= TCP Null Scan
+~ description .... local link and vlan id over-length cases
+sendp(Ether()/IP(src='192.168.111.17',dst='100.0.254.254')/TCP(flags='',sport=1024,dport=(80,400)))
+
+
++ TCP Fin Scan
+= TCP Fin Scan
+~ description .... local link and vlan id over-length cases
+sendp(Ether()/IP(src='192.168.111.17',dst='100.0.254.254')/TCP(flags='F',sport=1024,dport=(80,400)))
+
+
+
++ UDP Port Scan
+= UDP Port Scan
+~ description .... local link and vlan id over-length cases
+sendp(Ether()/IP(src='192.168.111.17',dst='100.0.254.254',id=102)/UDP(sport=100,dport=200)/('a'),iface='ens3'); sendp(Ether()/IP(src='100.0.254.254',dst='192.168.111.17',id=1001)/ICMPerror(type=3,code=3),iface='ens3'); sendp(Ether()/IP(src='192.168.111.17',dst='100.0.254.254',id=102)/UDP(sport=100,dport=(200,500))/('a'),iface='ens3')
+
+
+
