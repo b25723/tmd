@@ -1,0 +1,66 @@
+问题
+
+制作虚拟机镜像是在 openstack 外，通常都是使用镜像制作工具 image tools，或者自已动手 create image manually。然后将制作的镜像，上传至 glance 服务之中使用。
+
+不过，在一些极为特殊的情况下，有些客户可能有特殊的需求，例如，客户想要从 windows 或者 linux iso 启动一个 openstack 虚拟机，并利用这个虚拟机制作一个镜像。这里不就需求的合理性作讨论，只说一下如何在 openstack 中达成这个需求。
+
+面对的问题主要是两个：
+
+如何在 openstack 中，创建包含多个磁盘的虚拟机?
+因为我们基于 iso 安装虚拟机，所以除了 iso 之外，我们还需要额外传递至少一个空的磁盘给虚拟
+机。
+对于 windows 的特殊情况，还会面临 iso 中没有 virtio 驱动，导致识别不到 nova 默认为虚 拟机分配的磁盘的情况。注： nova 默认为虚拟机分配的磁盘总线都是 virtio。
+参考资料
+
+通过调查，发现以下一些有用信息。
+
+BootFromISO 中将传递 virtio 驱动的问题列在”Unresolved issues” 之列，临时也没有 blueprint 
+BlockDeviceConfig 中提到如何自定义磁盘的总线类型 
+LibvirtCustomHardware 中提到如何在镜像是设定磁盘总线类型
+
+解决方法
+
+通过参考上述资料，可以看出。只要传递多个 –block-device 就可以为虚拟机同时分配多个磁盘。
+那么 virtio iso 传递进虚拟机也就不是问题。
+
+以下针对 windows 的情况进行示例说明， 对于 linux 的情况会更简单。
+
+方法一:
+
+将 windows iso 上传至 glance 作为镜像
+
+glance image-create --name <windows iso name> --disk-format iso --container-format bare --file <windows iso file location> --progress
+
+从 windows iso 镜像启动虚拟机，并传递给虚拟机一个空的 ide 卷
+
+nova boot --flavor <flavor name> --image <windows iso name> --block-device source=blank,dest=volume,bus=ide,type=disk,size=10,bootindex=1 <windows instance name>
+
+注： source=blank 指定卷为空卷，bus=ide 指定磁盘总线，type 为disk 或 cdrom。size 是磁盘大小，bootindex 是启动优先级，–image 所指定的 cdrom 盘启动优先级为 0，我们这里指定空卷的启动优先级为 1。
+
+安装完成 windows 系统之后，nova stop <windows instance name> 关闭虚拟机。
+使用 glance image-list 找出刚才创建的新卷，基于新卷创建镜像即可
+
+cinder upload-to-image --force True --containder-format bare --disk-format raw <volume name> <image-name>
+
+设置镜像的属性，使得基于此镜像创建的虚拟机，磁盘总线都为 ide
+
+glance image-update --property hw_disk_bus=ide <image name>
+
+方法二：
+
+分别上传 windows iso 和 virtio iso 至 glance 作为镜像
+
+glance image-create --name <windows iso name> --disk-format iso --container-format bare --file <windows iso file location> --progress
+glance image-create --name <virtio iso name> --disk-format iso --container-format bare --file <virtio iso file location> --progress
+从 windows iso 镜像启动虚拟机，并传递给虚拟机一个空的 ide 卷和一个以 virtio iso 镜像建立的卷
+
+nova boot --flavor <flavor name> --image <windows iso uuid> --block-device source=image,dest=volume,id=<virtio iso uuid>,bus=ide,type=cdrom,size=1,bootindex=1 --block-device source=blank,dest=volume,bus=virtio,type=disk,size=10,bootindex=2 <instance with virtio name>
+
+注： virtio iso 的卷以 cdrom 的形式传递进去，避免可能的 windows 识别问题。
+
+windows 安装界面开始时，从 virtio iso CDROM 加载 virtio 磁盘驱动之后，再执行正常 的 windows 安装过程即可。
+安装完成 windows 系统之后，nova stop <windows instance name> 关闭虚拟机。
+使用 glance image-list 找出刚才创建的新卷，基于新卷创建镜像即可
+
+cinder upload-to-image --force True --containder-format bare --disk-format raw <volume name> <image-name>
+
