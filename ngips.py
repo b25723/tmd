@@ -32,7 +32,7 @@ POL='/rest/policies/sec'
 
 print URL
 #login and get sdi
-req=requests.post(URL+'/rest/admin/login',headers={'login':'rexwu','passHash':'d864934644cd577757afa824138ae169fd5ecbed','Authentication':'ZETA'},verify=False)
+req=requests.post(URL+'/rest/admin/login',headers={'login':'admin','passHash':'d864934644cd577757afa824138ae169fd5ecbed','Authentication':'ZETA'},verify=False)
 
 #a=requests.get(URL+IPS+'/packages',headers={'sid':req.json()['sid']},verify=False)
 #a=requests.get(URL+IPS+'/1',headers={'sid':req.json()['sid']},verify=False)
@@ -361,9 +361,9 @@ def copy_adp(counter=3):
 
 #=====================================================================
 
-#add_adp(100)
+add_adp(10)
 #copy_adp(1)
-add_account(100)
+#add_account(1)
 #add_ips(100)
 #copy_ips(1)
 #del_ips()

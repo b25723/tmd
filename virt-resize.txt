@@ -1,0 +1,9 @@
+virt-resize:
+
+qemu-img info ori.img
+virt-filesystems --long -h --all -a ori.qcow2
+qemu-img resize ori.img +10G
+truncate -s 10G tmp.img
+virt-resize --expand /dev/sdax ori.img tmp.img
+virt-filesystems --long -h --all -a tmp.img
+qemu-img info tmp.img

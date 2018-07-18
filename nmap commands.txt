@@ -1,0 +1,72 @@
+
+ipv4 syn
+nmap -sS -p T:80-90 -v 5.63.29.101
+
+ipv4 null
+nmap -sN -p T:210-235 -v 5.63.29.101
+
+ipv4 fin
+nmap -sF -p T:2211-2229 -v 5.63.29.101
+
+ipv4 xmas
+nmap -sX -p T:7755-7800 -v 5.63.29.101
+
+ipv4 unknown
+nmap --scanflags SYNFIN -p T:8000-8200 -v 5.63.29.101
+
+ipv4 udp
+nmap -sU -p125-149 -v 5.63.29.101 --max-rate 1
+
+
+to limit nmap packet sending rate
+--max-rate <number>
+ ==> send packets no faster than <number> per second
+
+
+
+==============================================================
+
+
+ipv6 syn
+nmap -sS -p T:80-100 -v -6 2001::9999:8888:7777:5566 --max-rate 1
+
+ipv6 null
+nmap -sN -p T:210-235 -v -6 2001::9999:8888:7777:5566 --max-rate 1
+
+ipv6 fin
+nmap -sF -p T:2211-2229 -v -6 2001::9999:8888:7777:5566 --max-rate 1
+
+ipv6 xmas
+nmap -sX -p T:7755-7765 -v -6 2001::9999:8888:7777:5566 --max-rate 1
+
+ipv6 udp
+nmap -sU -p125-149 -v -6 2001::9999:8888:7777:5566 --max-rate 1
+
+
+to limit nmap packet sending rate
+--max-rate <number>
+ ==> send packets no faster than <number> per second
+
+
+
+
+==============================================================
+
+ip sweep 
+
+nmap -sS -p T:199 -v 5.63.29.101-107
+
+ifconfig eth5:0 5.63.29.102
+
+
+===============================================================
+
+/sbin/ip -6 addr add <ipv6address>/<prefixlength> dev <interface>
+
+/sbin/ip -6 addr add 2001::1111:2222:3333:0055/64 dev eth5
+
+/sbin/ip -6 addr add 2001::9999:8888:7777:5566/64 dev eth5
+
+
+
+/sbin/ip -6 addr add 2002::2000/64 dev eth5
