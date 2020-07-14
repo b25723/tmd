@@ -1,0 +1,139 @@
+" Specify a directory for plugins
+" - For Neovim: stdpath('data') . '/plugged'
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+
+" Make sure you use single quotes
+
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+Plug 'junegunn/vim-easy-align'
+
+" Any valid git URL is allowed
+"Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+
+" Multiple Plug commands can be written in a single line using | separators
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+
+" On-demand loading
+"Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+"Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+
+" Using a non-master branch
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer',  'for': ['c', 'cpp','python'] }
+"Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+
+
+" Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
+Plug 'fatih/vim-go', { 'tag': '*' }
+
+Plug 'w0rp/ale', { 'for': ['python', 'sh', 'vim'] }
+
+" Plugin options
+Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' , 'for': 'go' }
+
+" Plugin outside ~/.vim/plugged with post-update hook
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+" Unmanaged plugin (manually installed and updated)
+"Plug '~/my-prototype-plugin'
+Plug 'Valloric/ListToggle'
+
+Plug 'mfukar/robotframework-vim', { 'for': 'robot' }
+Plug 'mMontu/vim-RobotUtils', { 'for': 'robot' }
+
+"Plug 'wesleyche/SrcExpl'
+
+
+Plug 'majutsushi/tagbar', { 'for': ['python', 'robot'] }
+Plug 'vim-scripts/taglist.vim', { 'for': ['python', 'robot'] }
+"Plug 'ludovicchabant/vim-gutentags', { 'for': ['python', 'robot'] }
+"Plug 'skywind3000/gutentags_plus', { 'for': ['python', 'robot'] }
+"Plug 'chazy/cscope_maps'
+
+
+" Initialize plugin system
+call plug#end()
+
+
+let mapleader=','
+noremap <leader>E :qa!<CR>   " Quit all windows
+
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+"let g:python_host_prog = '/home/rex/.virtualenvs/py27/bin/python'
+let g:python3_host_prog = '/usr/bin/python3'
+
+
+map <C-j> :cnext<CR>
+map <C-k> :cprev<CR>
+map <C-n> :lnex<CR>
+map <C-p> :lprev<CR>
+map <C-n> :tn<CR>
+map <C-p> :tp<CR>
+
+map <C-UP> <C-W>w
+
+set path+=**
+"set isfname+=32
+"autocmd BufRead,BufNewFile *.robot set filetype=text syntax=text
+"wincmd = <C-W>
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+"set tags+=~/.vim/tags/tx.tags;~/.vim/tags/python.tags
+
+nmap <Leader>tb :TagbarToggle<CR>
+nmap <Leader>tl :TlistToggle<CR>
+
+noremap <Leader>ts :ts 
+
+let g:tagbar_width = 50
+let g:tagbar_autoclose=1
+let g:tagbar_autofocus=1
+"let g:tagbar_left=1
+let g:tagbar_right=1
+
+set mouse+=a
+nnoremap <leader>fl :Lines 
+nnoremap <leader>fb :BLines 
+nnoremap <leader>ff :Files 
+nnoremap <leader>fg :GFiles 
+nnoremap <leader>f? :GFiles? 
+nnoremap <leader>ft :Tags<cr>
+nnoremap <leader>fa :Ag 
+nnoremap <leader>fr :Rg 
+
+"set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+"set list
+
+inoremap <leader><tab> <C-x><C-o>	"keyword completion
+
+set t_Co=256
+syntax on
+colorscheme molokai
+set wildignore+=**/node_modules/**
+"set autochdir
+"let Tlist_Auto_Open=1
+
+"set splitbelow
+"set splitright
+"set cursorline cursorcolumn
+let g:netrw_preview=1		"set the Ex file browser to open a vsplit pane
+let g:netrw_winsize=20
+let g:jedi#use_splits_not_buffers = "right"
+map <F5> <C-W>_<C-W><Bar>	"vim current window maximize
+nnoremap <leader>c :pc<CR>	"preview close
+
+let g:ale_completion_enabled = 1
+"let g:ale_open_list=1
+"let g:ale_linters = {'html': ['htmlhint'], 'javascript': ['jshint'], 'css': ['csslint'], 'python': ['flake8'], 'lua': ['luacheck'], 'sh': ['shellcheck'] }
+
+let g:ycm_global_ycm_extra_conf='~/.vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'

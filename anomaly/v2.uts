@@ -1,0 +1,157 @@
+
+#import pdb;pdb.set_trace()
+
+#notice remembering turn on allowing action to make packet passing through detection path.
+#declaring ip subscription.
+#ipv4
+#ipv6
+#vlan
+
++ Land TCP
+= Land TCP with ...
+~ description .... local link and vlan id over-length cases
+import sys
+import time
+nic=sys.argv[3]
+print nic
+
+sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='192.168.111.17')/TCP(sport=12,dport=12),iface=nic)
+
++ Land UDP
+= Land UDP with ...
+~ description ....
+
+sendp(Ether()/IP(src='192.168.111.17',dst='192.168.111.17')/UDP(sport=11,dport=11),iface=nic)
+
+
++ IGMP Bad
+= IGMP Bad
+~ description ....
+
+load_contrib('igmp')
+sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='100.0.254.254',proto=2)/IGMP(type=0x17),iface=nic)
+
++ ICMP Error message
+= ICMP Error message
+~ description ....
+
+sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='100.0.254.254',proto=1)/ICMP(type=3,code=12)/IPerror(src='1.1.1.1',dst='2.2.2.2'),iface=nic)
+
+
++ Bad TCP Flag
+= Bad TCP Flag
+~ description ....
+
+sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='192.168.111.5')/TCP(flags=''),iface=nic)
+
+
++ TCP SYN Flood
+= TCP SYN Flood
+~ description ....
+a=[x for x in Ether()/IP(src='192.168.111.17',dst='100.0.254.254',proto=6)/TCP(flags='S',sport=1024,dport=80)]
+b=[x for x in Ether()/IP(dst='192.168.111.17',src='100.0.254.254',proto=6)/TCP(flags='RA',dport=1024,sport=80)]
+c=zip(a,b)
+d=list(itertools.chain.from_iterable(c))
+sendp(d*200,iface=nic)
+
+
++ TCP Flood
+= TCP Flood
+~ description .... local link and vlan id over-length cases
+f=[]
+f.append(Ether()/IP(src='192.168.111.17',dst='100.0.254.254')/TCP(flags='UE',sport=1025,dport=80))
+f.append(Ether()/IP(dst='192.168.111.17',src='100.0.254.254')/TCP(flags='RA',dport=1025,sport=80))
+sendp(f*200,iface=nic)
+
+
+#import pdb;pdb.set_trace()
+
+#notice remembering turn on allowing action to make packet passing through detection path.
+#declaring ip subscription.
+#ipv4
+#ipv6
+#vlan
+
+
+
++ IGMP Flood
+= IGMP Flood
+~ description .... local link and vlan id over-length cases
+
+import sys
+import time
+nic=sys.argv[3]
+print nic
+
+load_contrib('igmp')
+sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='100.0.254.254',proto=2)/IGMP(type=0x17),iface=nic,count=300)
+
+
++ UDP Flood
+= UDP Flood
+~ description .... local link and vlan id over-length cases
+
+f=[]
+f.append((Ether()/IP(src='10.0.0.1',dst='10.0.0.1')/UDP(sport=10,dport=10)))
+f.append((Ether()/IP(src='10.0.0.1',dst='10.0.0.1',proto=1)/ICMPerror(type=3,code=3)))
+sendp(f*300,iface=nic)
+
+
+
+
++ ICMP Flood
+= ICMP Flood
+~ description .... local link and vlan id over-length cases
+
+sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(dst='100.0.0.1',src='100.0.254.254',proto=1)/ICMP(type=3,code=3),iface=nic,count=300)
+
+
+
+
++ IP Flood
+= IP Flood
+~ description .... local link and vlan id over-length cases
+
+sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='100.0.0.1',dst='100.0.254.254',flags=0x4),iface=nic,count=300)
+
+
+
++ TCP Port SYN Scan
+= TCP Port SYN Scan
+~ description ....
+
+sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='100.0.254.254',id=102)/TCP(flags='S',sport=100,dport=200)/('a'),iface=nic); sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='100.0.254.254',dst='192.168.111.17',id=1001)/TCP(flags='R',sport=200,dport=100),iface=nic); sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='100.0.254.254',id=102)/TCP(flags='S',sport=100,dport=(200,500))/('a'),iface=nic)
+
+
++ TCP XMAS Port Scan
+= TCP XMAS Port Scan
+~ description ....
+
+sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(id=120,src='192.168.111.17',dst='100.0.250.1')/TCP(flags='FPU',sport=100,dport=1),iface=nic); sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='100.0.250.1',dst='192.168.111.17',id=1100)/TCP(flags='R',sport=1,dport=100),iface=nic); sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(id=120,src='192.168.111.17',dst='100.0.250.1')/TCP(flags='FPU',sport=100,dport=(1,300)),iface=nic)
+
+
+
++ TCP Null Scan
+= TCP Null Scan
+~ description .... local link and vlan id over-length cases
+
+sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='100.0.254.252')/TCP(flags='',sport=1024,dport=80),iface=nic);sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(dst='192.168.111.17',src='100.0.254.252')/TCP(flags='R',sport=80,dport=1024),iface=nic);sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='100.0.254.252')/TCP(flags='',sport=1024,dport=(80,380)),iface=nic);
+
+
++ TCP Fin Scan
+= TCP Fin Scan
+~ description .... local link and vlan id over-length cases
+
+sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='100.0.254.251')/TCP(flags='F',sport=1024,dport=80),iface=nic);sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(dst='192.168.111.17',src='100.0.254.251')/TCP(flags='R',sport=80,dport=1024),iface=nic);sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='100.0.254.251')/TCP(flags='F',sport=1024,dport=(180,480)),iface=nic);
+
+
+
++ UDP Port Scan
+= UDP Port Scan
+~ description .... local link and vlan id over-length cases
+
+sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='100.0.254.250',id=102)/UDP(sport=100,dport=200)/('a'),iface=nic); sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='100.0.254.250',dst='192.168.111.17',id=1001,proto=1)/ICMPerror(type=3,code=3),iface=nic); sendp(Ether(src=RandMAC(),dst=RandMAC())/IP(src='192.168.111.17',dst='100.0.254.250',id=102)/UDP(sport=100,dport=(200,500))/('a'),iface=nic)
+
+
+
+
