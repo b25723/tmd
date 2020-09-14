@@ -1,0 +1,650 @@
+" Specify a directory for plugins
+" - For Neovim: stdpath('data') . '/plugged'
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+
+" Make sure you use single quotes
+
+
+"Plug 'tpope/vim-unimpaired'
+
+" Plugin outside ~/.vim/plugged with post-update hook
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
+Plug 'liuchengxu/vim-which-key'
+Plug 'thaerkh/vim-workspace'
+Plug 'vn-ki/coc-clap'
+Plug 'liuchengxu/graphviz.vim'
+Plug 'vim-test/vim-test'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+
+
+"Plug 'gyim/vim-boxdraw'
+
+" Unmanaged plugin (manually installed and updated)
+"Plug '~/my-prototype-plugin'
+
+Plug 'metakirby5/codi.vim'
+Plug 'mhinz/vim-startify'
+
+Plug 'mfukar/robotframework-vim', { 'for': 'robot' }
+Plug 'mMontu/vim-RobotUtils', { 'for': 'robot' }
+
+"Plug 'wesleyche/SrcExpl'
+
+" Using a non-master branch
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'skywind3000/gutentags_plus'
+Plug '~/global.vim'
+Plug 'voldikss/vim-floaterm'
+
+Plug 'liuchengxu/vista.vim'
+
+Plug 'jpalardy/vim-slime', { 'for': ['python','c','cpp','robot'] }
+Plug 'hanschen/vim-ipython-cell', { 'for': 'python'}
+
+
+" Initialize plugin system
+call plug#end()
+
+
+let g:mapleader=','
+let g:maplocalleader = "\<Space>"
+
+"nnoremap <silent> <leader>k :WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <leader> :<c-u>WhichKey  ','<CR>
+set timeoutlen=500
+
+nnoremap <silent> ] :<c-u>WhichKey ']'<CR>
+nnoremap <silent> [ :<c-u>WhichKey '['<CR>
+"nnoremap <silent> g :<c-u>WhichKey 'g'<CR>
+"<c-w> also called wincmd :wincmd j=<c-w>j
+
+"for s:i in range(1, 9)
+    "# <Leader>[1-9] move to window [1-9]
+"     execute 'nnoremap <Leader>' . s:i . ' :' . s:i . 'wincmd w<CR>'
+"endfor
+
+noremap <leader>E :qa!<CR>   " Quit all windows
+"noremap
+nnoremap <silent> <C-w>t :tab ts<CR><CR>
+"nnoremap <silent><nowait> <space>wt  :<C-u>tab tag<CR>
+
+"restore to last position
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+let g:python_host_prog = '/home/rex/.virtualenvs/py27/bin/python'
+let g:python3_host_prog = '/home/rex/.virtualenvs/py38/bin/python'
+
+
+"map <C-j> :cnext<CR>
+"map <C-k> :cprev<CR>
+"map <C-n> :lnex<CR>
+"map <C-p> :lprev<CR>
+"map <leader>j :tn<CR>
+"map <leader>k :tp<CR>
+map <C-j> :tn<CR>
+map <C-k> :tp<CR>
+
+"decide the C-] to call cscope(cstag,not tag)
+"set cscopetag
+"set csto=1
+"set cscopeprg='gtags-cscope'
+noremap <Leader>ts :sts <c-r><C-w><CR>
+noremap <Leader>tt :tab ts <c-r><C-w><CR>
+
+"tselect,tjump,stslect,tags,jump,buffer
+"map <C-UP> <C-W>w
+
+"set path+=/home/rex/.virtualenvs/py36/trex/**,/home/rex/.virtualenvs/py36/ICS_QA/**,/home/rex/.virtualenvs/py36/lib/**
+"set path+=/home/rex/.virtualenvs/py36/trex/**,/home/rex/.virtualenvs/py36/ICS_QA/**
+"set isfname+=32
+"autocmd BufRead,BufNewFile *.robot set filetype=text syntax=text
+"wincmd = <C-W>
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+"xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+"nmap ga <Plug>(EasyAlign)
+
+"set tags+=~/.vim/tags/tx.tags;~/.vim/tags/python.tags
+
+nmap <Leader>tb :Vista!!<CR>
+nmap <Leader>tc :Clap tags<CR>
+"tnoremap <Esc> <C-\><C-n>
+nnoremap   <silent>   <F12>   :FloatermToggle<CR>
+tnoremap   <silent>   <F12>   <C-\><C-n>:FloatermToggle<CR>
+let g:floaterm_winblend=0
+"hi FloatermNC guibg=gray
+
+"nmap <Leader>tb :TagbarToggle<CR>
+"nmap <Leader>tl :TlistToggle<CR>
+
+
+let g:tagbar_width = 50
+let g:tagbar_autoclose=0
+let g:tagbar_autofocus=0
+"let g:tagbar_left=1
+let g:tagbar_right=1
+
+set mouse+=a
+"nnoremap <leader>fl :Lines 
+"nnoremap <leader>fb :BLines 
+"nnoremap <leader>ff :Files<cr>
+"nnoremap <leader>fg :GFiles
+"nnoremap <leader>f? :GFiles? 
+"nnoremap <leader>ft :Tags<cr>
+"nnoremap <leader>fa :Ag 
+"nnoremap <leader>fr :Rg 
+
+"set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+"set list
+
+"inoremap <leader><tab> <C-x><C-o>	"keyword completion
+
+set t_Co=256
+syntax on
+colorscheme molokai
+set wildignore+=**/node_modules/**
+"set autochdir
+"let Tlist_Auto_Open=1
+
+set splitbelow
+set splitright
+"set cursorline cursorcolumn
+"set guicursor+=a:-blinkwait175-blinkoff150-blinkon175
+"set guicursor+=a:blinkwait700-blinkon400-blinkoff250
+"set so=999
+"set so=0
+set nu
+
+
+map <F5> <C-W>_<C-W><Bar>	"vim current window maximize
+nnoremap <leader>c :pc<CR>	"preview close
+
+
+"augroup rungroup
+"    autocmd!
+"    autocmd BufRead,BufNewFile *.go nnoremap <F6> :exec '!go run' shellescape(@%, 1)<cr>
+"    autocmd BufRead,BufNewFile *.py nnoremap <F6> :exec '!python' shellescape(@%, 1)<cr>
+"augroup END
+
+
+"set completeopt=longest,menu
+let g:slime_target = "tmux"
+let g:slime_python_ipython = 1
+"
+"let g:ale_python_flake8_options = '--ignore=F401,E225,E231,W391,E401,E402,E211,E266,E501,E302,E305'
+"set list
+set encoding=utf-8
+
+
+let g:coc_global_extensions = [
+             \ "coc-python",
+             \ "coc-json",
+             \ 'coc-snippets',
+             \ "coc-tsserver"]
+
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+"""""""""""""""""""""""""""""""""""""""""""""
+"Configuration is required to make coc.nvim easier to work with, since it doesn't change your key-mappings or Vim options. This is done as much as possible to avoid conflict with your other plugins.
+"
+"exclamationImportant: Some Vim plugins could change key mappings. Please use :verbose imap <tab> to make sure that your keymap has taken effect.
+
+" TextEdit might fail if hidden is not set.
+set hidden
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" Give more space for displaying messages.
+set cmdheight=2
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+"if has('nvim')
+"  inoremap <silent><expr> <c-space> coc#refresh()
+"else
+"  inoremap <silent><expr> <c-@> coc#refresh()
+"endif
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocActionAsync('doHover')
+    "call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+"autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+
+"set statusline^=%{coc#status()}\ %=\ %{get(b:,'coc_current_function','\ ')}
+set statusline=
+set statusline^=%{coc#status()}
+set statusline+=%2*\ %=\ cur_func:%{get(b:,'coc_current_function','\ ')}
+set statusline+=%2*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
+set statusline+=%3*\ %{''.(&fenc!=''?&fenc:&enc).''}      "Encoding
+set statusline+=%2*\ %y\                                  "FileType
+set statusline+=%1*\ %<%F\                                "File+path
+set statusline+=%7*\[%n]                                  "buffernr
+
+
+
+
+
+"set statusline+=%{get(g:,'coc_git_status','\ ')}%{get(b:,'coc_git_status','\ ')}%{get(b:,'coc_git_blame','\ ')}
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>d  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>r  :<C-u>CocListResume<CR>
+
+nnoremap <silent><nowait> <space>i  :<C-u>CocInfo<CR>
+nnoremap <silent><nowait> <space>x  :<C-u>CocConfig<CR>
+nnoremap <silent><nowait> <space>m  :<C-u>CocList marketplace<CR>
+nnoremap <silent><nowait> <space>ww  :<C-u>Clap windows<CR>
+nnoremap <silent><nowait> <space>p  :<C-u>Clap providers<CR>
+"nnoremap <silent><nowait> <space>tp  :<C-u>Clap tags<CR>
+
+set updatetime=300
+let g:coc_snippet_next = '<tab>'
+
+"let g:cscope_dir = '~/.cscope'
+"let g:cscope_map_keys = 1
+"let g:cscope_update_on_start = 1
+
+
+
+
+"let $GTAGSLABEL = 'native-pygments'
+"let $GTAGSCONF = '~/.globalrc'
+" gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
+let g:gutentags_add_default_project_roots = get(g:, 'gutentags_add_default_project_roots', 0)
+let g:gutentags_project_root = ['.root']
+
+" 所生成的数据文件的名称
+let g:gutentags_ctags_tagfile = 'tags'
+
+" 同时开启 ctags 和 gtags 支持：
+let g:gutentags_modules = []
+if executable('ctags')
+	let g:gutentags_modules += ['ctags']
+endif
+if executable('gtags-cscope') && executable('gtags')
+	let g:gutentags_modules += ['gtags_cscope']
+endif
+
+" 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let g:gutentags_cache_dir = expand('~/.cache/tags')
+
+" 配置 ctags 的参数，老的 Exuberant-ctags 不能有 --extra=+q，注意
+let g:gutentags_ctags_extra_args = ['--fields=+niazSr', '--extras=+qr']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+" 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
+let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+
+" 禁用 gutentags 自动加载 gtags 数据库的行为
+let g:gutentags_auto_add_gtags_cscope = 0
+let g:gutentags_plus_switch = 0
+
+let Gtags_Auto_Map = 1
+
+
+let $FZF_DEFAULT_OPTS = '--layout=reverse'
+let g:fzf_layout = { 'window': 'call OpenFloatingWin()' }
+let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.5, 'highlight': 'Comment' } }
+
+function! OpenFloatingWin()
+  let height = &lines - 3
+  let width = float2nr(&columns - (&columns * 2 / 10))
+  let col = float2nr((&columns - width) / 2)
+
+  " 设置浮动窗口打开的位置，大小等。
+  " 这里的大小配置可能不是那么的 flexible 有继续改进的空间
+  let opts = {
+        \ 'relative': 'editor',
+        \ 'row': height * 0.3,
+        \ 'col': col + 30,
+        \ 'width': width * 2 / 3,
+        \ 'height': height / 2
+        \ }
+
+  let buf = nvim_create_buf(v:false, v:true)
+  let win = nvim_open_win(buf, v:true, opts)
+
+  " 设置浮动窗口高亮
+  call setwinvar(win, '&winhl', 'Normal:Pmenu')
+
+  setlocal
+        \ buftype=nofile
+        \ nobuflisted
+        \ bufhidden=hide
+        \ nonumber
+        \ norelativenumber
+        \ signcolumn=no
+endfunction
+
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+" Ensure you have installed some decent font to show these pretty symbols, then you can enable icon for the kind.
+let g:vista#renderer#enable_icon = 0
+
+" Executive used when opening vista sidebar without specifying it.
+" See all the avaliable executives via `:echo g:vista#executives`.
+" ['ale', 'coc', 'ctags', 'lcn', 'nvim_lsp', 'vim_lsc', 'vim_lsp']
+let g:vista_default_executive = 'coc'
+
+
+let g:vista_fzf_preview = ['right:50%']
+
+" The default icons can't be suitable for all the filetypes, you can extend it as you wish.
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
+
+
+"let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.5, 'highlight': 'Comment' } }
+"let g:clap_theme = 'material_design_dark'
+"let g:clap_theme = 'solarized_dark'
+"let g:clap_theme = { 'preview': {'ctermfg': 'white', 'ctermbg': 'black', 'cterm': 'red'} }
+
+
+set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+vnoremap <C-y> :'<,'>w !xclip -selection clipboard<Cr><Cr>
+
+
+nnoremap <leader>ss :ToggleWorkspace<CR>
+let g:workspace_session_directory = $HOME . '/.vim/sessions/'
+"let g:workspace_session_name = 'Session.vim'
+
+call which_key#register('<Space>', "g:which_key_map")
+
+let g:which_key_map =  {}
+let g:which_key_map['w'] = {
+      \ 'name' : '+windows' ,
+      \ 'd' : ['<C-W>c'     , 'delete-window']         ,
+      \ '-' : ['<C-W>s'     , 'split-window-below']    ,
+      \ '|' : ['<C-W>v'     , 'split-window-right']    ,
+      \ '2' : ['<C-W>v'     , 'layout-double-columns'] ,
+      \ 'h' : ['<C-W>h'     , 'window-left']           ,
+      \ 'j' : ['<C-W>j'     , 'window-below']          ,
+      \ 'l' : ['<C-W>l'     , 'window-right']          ,
+      \ 'k' : ['<C-W>k'     , 'window-up']             ,
+      \ 'H' : ['<C-W>5<'    , 'expand-window-left']    ,
+      \ 'J' : [':resize +5'  , 'expand-window-below']   ,
+      \ 'L' : ['<C-W>5>'    , 'expand-window-right']   ,
+      \ 'K' : [':resize -5'  , 'expand-window-up']      ,
+      \ '=' : ['<C-W>='     , 'balance-window']        ,
+      \ 's' : ['<C-W>s'     , 'split-window-below']    ,
+      \ 'v' : ['<C-W>v'     , 'split-window-below']    ,
+      \ '?' : ['Windows'    , 'fzf-window']            ,
+      \ }
+
+let g:which_key_map.b = {
+      \ 'name' : '+buffer' ,
+      \ '1' : ['b1'        , 'buffer 1']        ,
+      \ '2' : ['b2'        , 'buffer 2']        ,
+      \ 'd' : ['bd'        , 'delete-buffer']   ,
+      \ 'f' : ['bfirst'    , 'first-buffer']    ,
+      \ 'h' : ['Startify'  , 'home-buffer']     ,
+      \ 'l' : ['blast'     , 'last-buffer']     ,
+      \ 'n' : ['bnext'     , 'next-buffer']     ,
+      \ 'p' : ['bprevious' , 'previous-buffer'] ,
+      \ '?' : ['Buffers'   , 'fzf-buffer']      ,
+      \ }
+
+let g:which_key_map.l = {
+      \ 'name' : '+lsp',
+      \ 'f' : ['spacevim#lang#util#Format()'          , 'formatting']       ,
+      \ 'r' : ['spacevim#lang#util#FindReferences()'  , 'references']       ,
+      \ 'R' : ['spacevim#lang#util#Rename()'          , 'rename']           ,
+      \ 's' : ['spacevim#lang#util#DocumentSymbol()'  , 'document-symbol']  ,
+      \ 'S' : ['spacevim#lang#util#WorkspaceSymbol()' , 'workspace-symbol'] ,
+      \ 'g' : {
+        \ 'name': '+goto',
+        \ 'd' : ['spacevim#lang#util#Definition()'     , 'definition']      ,
+        \ 't' : ['spacevim#lang#util#TypeDefinition()' , 'type-definition'] ,
+        \ 'i' : ['spacevim#lang#util#Implementation()' , 'implementation']  ,
+        \ },
+      \ }
+
+
+"let &t_TI = "\<Esc>[>4;2m"
+"let &t_TE = "\<Esc>[>4;m"
+"vim 1.txt 2.txt ;then :tab sba will convert all buffer into tabs. just like a magic
+
+"let g:which_key_map.f = { 'name' : '+file' }
+
+nnoremap <silent> <leader>fs :update<CR>
+nnoremap <silent> <leader>f1 :tabe ~/.vimrc<CR> "edit vimrc
+nnoremap <silent> <leader>f2 :tabe ~/.bashrc<CR> "edit bashrc
+nnoremap <silent> <leader>f3 :tabe ~/.tmux.conf<CR> "edit tmuxrc
+nnoremap <silent> <leader>f4 :tabe ~/.config/nvim/coc-settings.json<CR> "edit coc-setttings
+nnoremap <silent> <leader>x :quit<CR> "quit
+" cormatting selected code.
+xmap <leader>ff  <Plug>(coc-format-selected)
+nmap <leader>ff  <Plug>(coc-format-selected)
+
+nnoremap <silent> <Space>up :PlugUpdate<CR>
+nnoremap <silent> <Space>ug :PlugUpgrade<CR>
+
+"let g:which_key_map.f.s = 'save-file'
+"let g:which_key_map.f.d = 'open-vimrc'
+"let g:which_key_map.f.m = 'open-tmuxconf'
+
+"cnoremap <leader>* :Clap grep2 ++query=<cword><CR>
+nnoremap <leader>fg :Clap grep2 ++query=<cword><CR>
+nnoremap <leader>ft :Clap grep2<CR>
+nnoremap <leader>fp :Clap grep<CR>
+
+nnoremap <leader>bl :Clap buffers<CR>
+
+nnoremap <silent> <leader>oq  :copen<CR>
+nnoremap <silent> <leader>ol  :lopen<CR>
+nnoremap <silent> <leader>oqc  :cclose<CR>
+nnoremap <silent> <leader>olc  :lclose<CR>
+"let g:which_key_map.o = {
+"      \ 'name' : '+open',
+"      \ 'q' : 'open-quickfix'    ,
+"      \ 'l' : 'open-locationlist',
+"      \ 'qc' : 'close-quickfix'    ,
+"      \ 'lc' : 'close-locationlist',
+"      \ }
+
+"let g:which_key_map.1 = 'which_key_ignore'
+"
+
+"nnoremap <silent> ] :<c-u>WhichKey ']'<CR>
+"nnoremap <silent> <space>t1  :Clap tags<CR>
+"nnoremap <silent> <space>t2  :Clap proj_tags<CR>
+let g:which_key_map.t = {
+      \ 'name' : '+tag' ,
+      \ 't' : [':Clap tags'        , 'tags']        ,
+      \ 'd' : [':Graphviz!'        , 'dot']        ,
+      \ 'j' : [':Clap jumps'        , 'jumps']        ,
+      \ 'p' : [':Clap proj_tags'        , 'project-tags']        ,
+      \ }
+
+let g:which_key_map.h = {
+      \ 'name' : '+history' ,
+      \ 's' : [':Clap hist/'        , 'search history']        ,
+      \ 'c' : [':Clap hist:'        , 'command history']        ,
+      \ 'o' : [':Clap history'        , 'buffer history']        ,
+      \ }
+
+let g:which_key_map.f = {
+      \ 'name' : '+file' ,
+      \ 'b' : [':Clap filer'        , 'file browser']        ,
+      \ 'f' : [':Clap files'        , 'file find']        ,
+      \ 'g' : [':Clap grep2'        , 'file grep2']        ,
+      \ '*' : [':Clap grep2 ++query=<cword><CR>'        , 'grep2 under_cur']        ,
+      \ }
+"nnoremap <silent><nowait> <space>f  :<C-u>Clap filer<CR>
+"nnoremap <space>* :Clap grep2 ++query=<cword><CR>
+"nnoremap <silent><nowait> <space>fg  :<C-u>Clap grep2<CR>
+
+" How to open the generated output file.
+" If does not exist, graphviz.vim will automatically choose the right way depending on the platform.
+let g:graphviz_viewer = 'xdg-open'
+
+" Default output format. Default is 'pdf'.
+let g:graphviz_output_format = 'png'
+
+" Options passed on to dot. Default is ''.
+let g:graphviz_shell_option = ''
+
+nnoremap <Leader>fr :source ~/.vimrc<bar>:echo 'config loaded'<CR>
+
+" these "Ctrl mappings" work well when Caps Lock is mapped to Ctrl
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-s> :TestSuite<CR>
+nmap <silent> t<C-l> :TestLast<CR>
+nmap <silent> t<C-g> :TestVisit<CR>
+
+let test#strategy = {
+  \ 'nearest': 'neovim',
+  \ 'file':    'dispatch',
+  \ 'suite':   'basic',
+\}
+
+":tabedit % | call CocActionAsync('jumpDefinition') or :call CocAction('jumpDefinition', 'tab drop')
+
+let g:gutentags_define_advanced_commands = 1
+let g:gen_tags#verbose = 1
