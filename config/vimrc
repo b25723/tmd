@@ -18,9 +18,6 @@ Plug 'thaerkh/vim-workspace'
 Plug 'vn-ki/coc-clap'
 Plug 'liuchengxu/graphviz.vim'
 Plug 'vim-test/vim-test'
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
-
 
 "Plug 'gyim/vim-boxdraw'
 
