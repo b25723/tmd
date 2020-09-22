@@ -15,17 +15,30 @@ Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
 Plug 'liuchengxu/vim-which-key'
 Plug 'thaerkh/vim-workspace'
-Plug 'vn-ki/coc-clap'
+"Plug 'vn-ki/coc-clap'
 Plug 'liuchengxu/graphviz.vim'
 Plug 'vim-test/vim-test'
+"Plug 'dense-analysis/ale'
+Plug 'vimwiki/vimwiki'
+Plug 'itchyny/calendar.vim'
+
+
+" Required for code-query
+"Plug 'Shougo/unite.vim'
+"Plug 'devjoe/vim-codequery'
+
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+
 
 "Plug 'gyim/vim-boxdraw'
 
 " Unmanaged plugin (manually installed and updated)
 "Plug '~/my-prototype-plugin'
 
-Plug 'metakirby5/codi.vim'
-Plug 'mhinz/vim-startify'
+"Plug 'metakirby5/codi.vim'
+"Plug 'mhinz/vim-startify'
+
 
 Plug 'mfukar/robotframework-vim', { 'for': 'robot' }
 Plug 'mMontu/vim-RobotUtils', { 'for': 'robot' }
@@ -55,7 +68,7 @@ let g:maplocalleader = "\<Space>"
 "nnoremap <silent> <leader>k :WhichKey '<Space>'<CR>
 nnoremap <silent> <localleader>      :<c-u>WhichKey '<Space>'<CR>
 nnoremap <silent> <leader> :<c-u>WhichKey  ','<CR>
-set timeoutlen=500
+set timeoutlen=300
 
 nnoremap <silent> ] :<c-u>WhichKey ']'<CR>
 nnoremap <silent> [ :<c-u>WhichKey '['<CR>
@@ -67,7 +80,7 @@ nnoremap <silent> [ :<c-u>WhichKey '['<CR>
 "     execute 'nnoremap <Leader>' . s:i . ' :' . s:i . 'wincmd w<CR>'
 "endfor
 
-noremap <leader>E :qa!<CR>   " Quit all windows
+noremap <leader>E :qa!<CR> "Quit all windows
 "noremap
 nnoremap <silent> <C-w>t :tab ts<CR><CR>
 "nnoremap <silent><nowait> <space>wt  :<C-u>tab tag<CR>
@@ -100,6 +113,7 @@ noremap <Leader>tt :tab ts <c-r><C-w><CR>
 "tselect,tjump,stslect,tags,jump,buffer
 "map <C-UP> <C-W>w
 
+"set path+=./
 "set path+=/home/rex/.virtualenvs/py36/trex/**,/home/rex/.virtualenvs/py36/ICS_QA/**,/home/rex/.virtualenvs/py36/lib/**
 "set path+=/home/rex/.virtualenvs/py36/trex/**,/home/rex/.virtualenvs/py36/ICS_QA/**
 "set isfname+=32
@@ -149,23 +163,29 @@ set mouse+=a
 
 set t_Co=256
 syntax on
+"set termguicolors
 colorscheme molokai
+
+
+
 set wildignore+=**/node_modules/**
 "set autochdir
 "let Tlist_Auto_Open=1
 
 set splitbelow
 set splitright
+"set splitright
+"set cursorline cursorcolumn
 "set cursorline cursorcolumn
 "set guicursor+=a:-blinkwait175-blinkoff150-blinkon175
 "set guicursor+=a:blinkwait700-blinkon400-blinkoff250
-"set so=999
+"sct so=999
 "set so=0
 set nu
 
 
 map <F5> <C-W>_<C-W><Bar>	"vim current window maximize
-nnoremap <leader>c :pc<CR>	"preview close
+"nnoremap <leader>c :pc<CR>	"preview close
 
 
 "augroup rungroup
@@ -282,7 +302,8 @@ function! s:show_documentation()
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
-"autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
 
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
@@ -349,7 +370,6 @@ set statusline+=%7*\[%n]                                  "buffernr
 
 
 
-
 "set statusline+=%{get(g:,'coc_git_status','\ ')}%{get(b:,'coc_git_status','\ ')}%{get(b:,'coc_git_blame','\ ')}
 
 " Mappings for CoCList
@@ -387,8 +407,8 @@ let g:coc_snippet_next = '<tab>'
 
 
 
-"let $GTAGSLABEL = 'native-pygments'
-"let $GTAGSCONF = '~/.globalrc'
+let $GTAGSLABEL = 'native-pygments'
+let $GTAGSCONF = '/home/rex/.globalrc'
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
 let g:gutentags_add_default_project_roots = get(g:, 'gutentags_add_default_project_roots', 0)
 let g:gutentags_project_root = ['.root']
@@ -404,6 +424,7 @@ endif
 if executable('gtags-cscope') && executable('gtags')
 	let g:gutentags_modules += ['gtags_cscope']
 endif
+
 
 " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
 let g:gutentags_cache_dir = expand('~/.cache/tags')
@@ -464,7 +485,7 @@ let g:vista#renderer#enable_icon = 0
 " Executive used when opening vista sidebar without specifying it.
 " See all the avaliable executives via `:echo g:vista#executives`.
 " ['ale', 'coc', 'ctags', 'lcn', 'nvim_lsp', 'vim_lsc', 'vim_lsp']
-let g:vista_default_executive = 'coc'
+let g:vista_default_executive = 'ctags'
 
 
 let g:vista_fzf_preview = ['right:50%']
@@ -553,13 +574,17 @@ nnoremap <silent> <leader>f1 :tabe ~/.vimrc<CR> "edit vimrc
 nnoremap <silent> <leader>f2 :tabe ~/.bashrc<CR> "edit bashrc
 nnoremap <silent> <leader>f3 :tabe ~/.tmux.conf<CR> "edit tmuxrc
 nnoremap <silent> <leader>f4 :tabe ~/.config/nvim/coc-settings.json<CR> "edit coc-setttings
+nnoremap <silent> <leader>fm :Maps<CR>
 nnoremap <silent> <leader>x :quit<CR> "quit
+
+nnoremap <silent> <leader>wc :Calendar<CR> "Calendar
 " cormatting selected code.
 xmap <leader>ff  <Plug>(coc-format-selected)
 nmap <leader>ff  <Plug>(coc-format-selected)
 
-nnoremap <silent> <Space>up :PlugUpdate<CR>
-nnoremap <silent> <Space>ug :PlugUpgrade<CR>
+nnoremap <silent> <Space>uu :PlugUpdate<CR>
+nnoremap <silent> <Space>um :PlugUpgrade<CR>
+nnoremap <silent> <Space>ui :PlugInstall<CR>
 
 "let g:which_key_map.f.s = 'save-file'
 "let g:which_key_map.f.d = 'open-vimrc'
@@ -572,10 +597,10 @@ nnoremap <leader>fp :Clap grep<CR>
 
 nnoremap <leader>bl :Clap buffers<CR>
 
-nnoremap <silent> <leader>oq  :copen<CR>
+nnoremap <silent> <leader>oc  :cclose<CR>
+nnoremap <silent> <leader>op  :copen<CR>
 nnoremap <silent> <leader>ol  :lopen<CR>
-nnoremap <silent> <leader>oqc  :cclose<CR>
-nnoremap <silent> <leader>olc  :lclose<CR>
+nnoremap <silent> <leader>os  :lclose<CR>
 "let g:which_key_map.o = {
 "      \ 'name' : '+open',
 "      \ 'q' : 'open-quickfix'    ,
@@ -610,8 +635,11 @@ let g:which_key_map.f = {
       \ 'b' : [':Clap filer'        , 'file browser']        ,
       \ 'f' : [':Clap files'        , 'file find']        ,
       \ 'g' : [':Clap grep2'        , 'file grep2']        ,
-      \ '*' : [':Clap grep2 ++query=<cword><CR>'        , 'grep2 under_cur']        ,
+      \ '*' : [':Clap grep2 ++query=<cword>'        , 'grep2 under_cur']        ,
       \ }
+
+"let g:clap_layout = { 'relative': 'editor' }
+let g:clap_open_action= { 'ctrl-t': 'tab split', 'ctrl-x': 'split', 'ctrl-v': 'vsplit' }
 "nnoremap <silent><nowait> <space>f  :<C-u>Clap filer<CR>
 "nnoremap <space>* :Clap grep2 ++query=<cword><CR>
 "nnoremap <silent><nowait> <space>fg  :<C-u>Clap grep2<CR>
@@ -645,3 +673,15 @@ let test#strategy = {
 
 let g:gutentags_define_advanced_commands = 1
 let g:gen_tags#verbose = 1
+
+let g:netrw_preview=1
+let g:netrw_winsize=20
+
+autocmd! FileType which_key
+autocmd  FileType which_key set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
+nmap <A-n> :lnext<CR>                                                                                      
+nmap <A-p> :lprev<CR>                                                                                      
+
+
